@@ -1,6 +1,6 @@
-# Viva Lago OS
+# LotIA
 
-Sistema de gestión para el desarrollo inmobiliario **Viva Lago Country**, con interfaz de escritorio: barra de menú, dock, ventanas que se mueven, redimensionan, minimizan y se acomodan a media pantalla, buscador global y centro de alertas.
+SaaS de gestión para loteadoras con interfaz de escritorio estilo Windows 11: barra de tareas con menú Inicio, ventanas que se mueven, redimensionan, minimizan y se encajan (media pantalla o completa), buscador global y centro de alertas. **Viva Lago Country** es el cliente de demostración, con datos ficticios.
 
 Basado en la demo [viva-lago-country-sistema.vercel.app](https://viva-lago-country-sistema.vercel.app/). Conserva su lógica de negocio y su identidad visual, y la lleva a un entorno multiventana.
 
@@ -13,7 +13,7 @@ npm run build      # typecheck + build de producción en dist/
 npm test           # motor de financiación, pruebas de integridad y consultas (sin navegador)
 ```
 
-Es una demo con datos ficticios y sin backend. El estado se guarda en `localStorage` y se reinicia desde **Viva Lago → Reiniciar la demo**.
+Es una demo con datos ficticios y sin backend. El estado se guarda en `localStorage` y se reinicia desde **Inicio → botón de sesión → Reiniciar la demo**.
 
 ## Aplicaciones
 
@@ -33,12 +33,12 @@ Es una demo con datos ficticios y sin backend. El estado se guarda en `localStor
 | Sistema | Pruebas de integridad, integraciones, automatizaciones y matriz de permisos |
 | Configuración *(nueva)* | Tema claro/oscuro, categorías de riesgo, respaldo JSON y atajos |
 
-El selector **Ver como** de la barra de menú cambia de rol: Dirección, Administración financiera, Gerencia comercial, Asesora, Auditoría o Propietario. Cada rol ve solo las apps y los datos que le corresponden.
+El selector **Ver como** de la barra de tareas cambia de rol: Dirección, Administración financiera, Gerencia comercial, Asesora, Auditoría o Propietario. Cada rol ve solo las apps y los datos que le corresponden.
 
 ## Atajos
 
 - `Ctrl/⌘ + K`: buscar apps, lotes, prospectos y contratos.
-- Doble clic en la barra de título: maximizar o restaurar.
+- Doble clic en la barra de título: maximizar o restaurar. Pasar el mouse sobre maximizar muestra los diseños de encaje.
 - Arrastrar una ventana al borde izquierdo o derecho la acomoda a media pantalla; al borde superior, la maximiza.
 - `Esc`: cerrar el diálogo, el buscador o las alertas.
 

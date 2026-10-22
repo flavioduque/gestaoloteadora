@@ -9,15 +9,16 @@ export interface Win {
   snap?: 'left' | 'right' | null;
 }
 
-export const MENU_H = 34;
-export const DOCK_H = 78;
-const LS = 'vlc-os-wm';
+export const MENU_H = 0;
+/** Alto de la barra de tareas inferior. */
+export const DOCK_H = 48;
+const LS = 'lotia-wm';
 
 type Geo = Pick<Win, 'x' | 'y' | 'w' | 'h' | 'max'>;
 let geo: Record<string, Geo> = {};
 try { geo = JSON.parse(localStorage.getItem(LS) || '{}'); } catch { /* sin almacenamiento */ }
 
-const LS_SESSION = 'vlc-os-session';
+const LS_SESSION = 'lotia-session';
 let wins: Win[] = [];
 try { wins = JSON.parse(localStorage.getItem(LS_SESSION) || '[]'); } catch { /* sesión nueva */ }
 let zTop = wins.reduce((m, w) => Math.max(m, w.z), 10);

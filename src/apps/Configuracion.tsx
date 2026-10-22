@@ -44,7 +44,7 @@ export default function Configuracion(_: AppProps) {
       <DL items={[['Usuario', me().user], ['Rol', me().label], ['Fecha de corte', D.fmt(S.T)], ['Datos generados', S.generatedAt.slice(0, 16).replace('T', ' ')], ['Lotes · contratos · prospectos', `${S.lots.length} · ${S.contracts.length} · ${S.prospects.length}`], ['Eventos de auditoría', String(S.audit.length)]]} />
       <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         <Btn kind="danger" icon="reset" onClick={() => openDialog({ title: 'Reiniciar la demo', body: <p>Se descartan todos los cambios y se regeneran los datos ficticios con fecha de corte de hoy.</p>, submit: 'Reiniciar', danger: true, onSubmit: () => { resetDemo(); closeAll(); toast('Demo reiniciada.'); } })}>Reiniciar la demo</Btn>
-        <Btn icon="down" onClick={() => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(st(), null, 1)], { type: 'application/json' })); a.download = `viva-lago-respaldo-${st().T}.json`; a.click(); }}>Descargar respaldo (JSON)</Btn>
+        <Btn icon="down" onClick={() => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(st(), null, 1)], { type: 'application/json' })); a.download = `lotia-respaldo-${st().T}.json`; a.click(); }}>Descargar respaldo (JSON)</Btn>
       </div>
     </Sec>
     <Sec title="Atajos de teclado" meta="Escritorio">

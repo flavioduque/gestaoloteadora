@@ -6,72 +6,73 @@ import { can, commit, getBuyer, me, nowTs, resetDemo, log, role, setRole, st } f
 import type { RoleKey } from '../domain/types';
 import { D, DOW, MESL, pct, usd, usdK } from '../domain/util';
 import { useDomain } from './hooks';
-import { Icon, Mono } from './icons';
+import { Icon, LotiaMark } from './icons';
 import { go, openApp, openInsp } from './nav';
 import { OverlayHost, openDialog, toast } from './overlay';
 import { Window } from './Window';
 import { closeAll, dockClick, focused, isMobile, minimizeAll, open, useWins } from './wm';
 import { ReasonField, reasonOf, REASON_ERR } from '../ui/kit';
 
-/* ——— Reloj ——— */
+/* ——— Reloj (bandeja del sistema) ——— */
 function Clock() {
   const [n, setN] = useState(() => new Date());
   useEffect(() => { const t = setInterval(() => setN(new Date()), 15000); return () => clearInterval(t); }, []);
-  return <span className="mb-clock">{DOW[n.getDay()]} {n.getDate()} · {String(n.getHours()).padStart(2, '0')}:{String(n.getMinutes()).padStart(2, '0')}</span>;
-}
-
-/* ——— Barra de menú ——— */
-function MenuBar({ onSearch, onBell, alerts }: { onSearch: () => void; onBell: () => void; alerts: Alert[] }) {
-  const wins = useWins();
-  const f = focused();
-  const [menu, setMenu] = useState(false);
-  const hot = alerts.filter(a => a.sev !== 'media').length;
-  const { S } = useDomain();
-  useEffect(() => { if (!menu) return; const c = () => setMenu(false); window.addEventListener('pointerdown', c); return () => window.removeEventListener('pointerdown', c); }, [menu]);
-  const changeRole = (r: RoleKey) => {
-    setRole(r); closeAll();
-    toast(`Viendo como ${ROLES[r].label}.`);
-    open(r === 'propietario' ? 'portal' : r === 'asesor' ? 'crm' : r === 'finanzas' ? 'fin' : 'dir', {}, appDef(r === 'propietario' ? 'portal' : r === 'asesor' ? 'crm' : r === 'finanzas' ? 'fin' : 'dir').size);
-  };
-  return <header className="menubar" role="menubar">
-    <div className="mb-left">
-      <div className="mb-menu" onPointerDown={e => e.stopPropagation()}>
-        <button type="button" className="mb-brand" aria-haspopup="menu" aria-expanded={menu} onClick={() => setMenu(m => !m)}><Mono size={20} /><span>Viva Lago</span></button>
-        {menu && <div className="menu" role="menu">
-          <button role="menuitem" onClick={() => { setMenu(false); openApp('tour'); }}><Icon n="tour" />Recorrido ejecutivo</button>
-          <button role="menuitem" onClick={() => { setMenu(false); openApp('settings'); }}><Icon n="settings" />Configuración</button>
-          <hr />
-          <button role="menuitem" onClick={() => { setMenu(false); minimizeAll(); }}><Icon n="grid" />Mostrar escritorio</button>
-          <button role="menuitem" onClick={() => { setMenu(false); closeAll(); }}><Icon n="x" />Cerrar todas las ventanas</button>
-          <hr />
-          <button role="menuitem" onClick={() => { setMenu(false); askReset(); }}><Icon n="reset" />Reiniciar la demo…</button>
-        </div>}
-      </div>
-      <b className="mb-app">{f ? (f.app === 'insp' ? 'Ficha' : appDef(f.app).title) : 'Escritorio'}</b>
-      <span className="mb-demo"><b>DEMO</b><span className="long">Datos ficticios · corte {D.fmt(S.T)}</span></span>
-    </div>
-    <div className="mb-right">
-      <label className="mb-role"><span className="sr">Ver como</span><Icon n="user" size={15} />
-        <select value={role()} onChange={e => changeRole(e.target.value as RoleKey)} aria-label="Ver como">{(Object.keys(ROLES) as RoleKey[]).map(k => <option key={k} value={k}>{ROLES[k].label}</option>)}</select>
-      </label>
-      <button type="button" className="mb-btn" onClick={onSearch} aria-label="Buscar (Ctrl+K)" title="Buscar · Ctrl+K"><Icon n="search" size={16} /><kbd>⌘K</kbd></button>
-      {can('exec') && <button type="button" className="mb-btn" onClick={onBell} aria-label={`Alertas: ${alerts.length}`}><Icon n="bell" size={16} />{hot > 0 && <span className="mb-badge">{hot}</span>}</button>}
-      <Clock />
-    </div>
-    <span className="sr" aria-live="polite">{wins.length} ventanas abiertas</span>
-  </header>;
+  return <span className="tb-clock" aria-label="Hora"><span>{String(n.getHours()).padStart(2, '0')}:{String(n.getMinutes()).padStart(2, '0')}</span><span>{String(n.getDate()).padStart(2, '0')}/{String(n.getMonth() + 1).padStart(2, '0')}/{n.getFullYear()}</span></span>;
 }
 
 function askReset() {
   openDialog({ title: 'Reiniciar la demo', body: <p>Se descartan todos los cambios hechos en esta demo y se regeneran los datos ficticios con fecha de corte de hoy. No afecta información real.</p>, submit: 'Reiniciar', danger: true, onSubmit: () => { resetDemo(); closeAll(); toast('Demo reiniciada con datos ficticios nuevos.'); } });
 }
 
-/* ——— Dock ——— */
-function Dock() {
+function changeRole(r: RoleKey) {
+  setRole(r); closeAll();
+  toast(`Viendo como ${ROLES[r].label}.`);
+  const a = r === 'propietario' ? 'portal' : r === 'asesor' ? 'crm' : r === 'finanzas' ? 'fin' : 'dir';
+  open(a, {}, appDef(a).size);
+}
+
+/* ——— Menú Inicio: apps ancladas, recomendados y sesión ——— */
+function StartMenu({ onClose, onSearch }: { onClose: () => void; onSearch: () => void }) {
+  const { S } = useDomain();
+  const [power, setPower] = useState(false);
+  const apps = APPS.filter(a => a.id !== 'insp' && allowed(a));
+  const rec = agendaItems(S.T, D.add(S.T, 2)).filter(i => i.go).slice(0, 6);
+  const run = (fn: () => void) => { onClose(); fn(); };
+  return <div className="start" role="dialog" aria-label="Inicio" onPointerDown={e => e.stopPropagation()}>
+    <div className="start-b">
+      <button type="button" className="start-search" onClick={() => run(onSearch)}><Icon n="search" size={16} />Buscar apps, lotes, prospectos y contratos</button>
+      <section><h2>Anclado</h2><div className="start-grid" style={{ marginTop: 8 }}>
+        {apps.map(a => <button key={a.id} type="button" className="start-app" onClick={() => run(() => openApp(a.id))}><span className={`tile t-${a.tint}`}><Icon n={a.icon} size={18} /></span>{a.title}</button>)}
+      </div></section>
+      {rec.length > 0 && <section><h2>Recomendado</h2><div className="start-rec" style={{ marginTop: 8 }}>
+        {rec.map(i => <button key={i.id} type="button" onClick={() => run(() => go(i.go!))}><span className={'k k-' + i.kind} /><span>{i.title}<small>{D.fmtS(i.date)}{i.time ? ' · ' + i.time : ''} · {i.sub}</small></span></button>)}
+      </div></section>}
+    </div>
+    <footer className="start-f">
+      <div className="start-user"><span className="av">{me().user.split(' ').map(x => x[0]).slice(0, 2).join('')}</span><span>{me().user}<small>{me().label} · Viva Lago Country (demo)</small></span></div>
+      <div className="power">
+        <button type="button" className="tb-it" aria-label="Opciones de sesión" aria-expanded={power} onClick={() => setPower(p => !p)}><Icon n="power" /></button>
+        {power && <div className="menu" role="menu">
+          <button role="menuitem" onClick={() => run(() => openApp('tour'))}><Icon n="tour" />Recorrido ejecutivo</button>
+          <button role="menuitem" onClick={() => run(() => openApp('settings'))}><Icon n="settings" />Configuración</button>
+          <hr />
+          <button role="menuitem" onClick={() => run(minimizeAll)}><Icon n="grid" />Mostrar escritorio</button>
+          <button role="menuitem" onClick={() => run(closeAll)}><Icon n="x" />Cerrar todas las ventanas</button>
+          <hr />
+          <button role="menuitem" onClick={() => run(askReset)}><Icon n="reset" />Reiniciar la demo…</button>
+        </div>}
+      </div>
+    </footer>
+  </div>;
+}
+
+/* ——— Barra de tareas: Inicio, búsqueda, apps ancladas y abiertas, bandeja ——— */
+function Taskbar({ start, onStart, onSearch, onBell, alerts }: { start: boolean; onStart: () => void; onSearch: () => void; onBell: () => void; alerts: Alert[] }) {
   const wins = useWins();
   const { S, DV } = useDomain();
   const f = focused();
   const apps = APPS.filter(a => a.dock && allowed(a));
+  const hot = alerts.filter(a => a.sev !== 'media').length;
   const badge = (id: string) => {
     if (id === 'dir') return DV.alerts.filter(a => a.sev !== 'media').length;
     if (id === 'fin' && can('fin_view')) return S.bank.filter(b => b.status === 'pendiente').length;
@@ -80,17 +81,27 @@ function Dock() {
     return 0;
   };
   const insp = wins.filter(w => w.app === 'insp');
-  return <nav className="dock" aria-label="Aplicaciones">
-    <div className="dock-in">
+  return <nav className="taskbar" aria-label="Barra de tareas">
+    <div className="tb-left" />
+    <div className="tb-center">
+      <button type="button" className="tb-it" aria-label="Inicio" aria-expanded={start} onPointerDown={e => e.stopPropagation()} onClick={onStart}><LotiaMark size={24} /><span className="tb-tip">Inicio</span></button>
+      <button type="button" className="tb-it" aria-label="Buscar (Ctrl+K)" onClick={onSearch}><Icon n="search" size={20} /><span className="tb-tip">Buscar · Ctrl+K</span></button>
+      <span className="tb-sep" />
       {apps.map(a => { const w = wins.find(x => x.id === a.id); const n = badge(a.id); return (
-        <button key={a.id} type="button" className={`dock-it${w ? ' open' : ''}${f?.id === a.id ? ' front' : ''}`} onClick={() => dockClick(a.id, a.size)} aria-label={a.title + (n ? `, ${n} pendientes` : '')}>
-          <span className={`tile t-${a.tint}`}><Icon n={a.icon} size={22} /></span>
-          {n > 0 && <span className="dock-badge">{n}</span>}
-          <span className="dock-tip">{a.title}</span>
+        <button key={a.id} type="button" className={`tb-it${w ? ' open' : ''}${f?.id === a.id ? ' front' : ''}`} onClick={() => dockClick(a.id, a.size)} aria-label={a.title + (n ? `, ${n} pendientes` : '')}>
+          <span className={`tile t-${a.tint}`}><Icon n={a.icon} size={16} /></span>
+          {n > 0 && <span className="tb-badge">{n}</span>}
+          <span className="tb-tip">{a.title}</span>
         </button>); })}
-      {insp.length > 0 && <span className="dock-sep" />}
-      {insp.slice(-4).map(w => <button key={w.id} type="button" className={`dock-it open${f?.id === w.id ? ' front' : ''}`} onClick={() => dockClick(w.id)} aria-label={`Ficha ${w.params.id}`}>
-        <span className="tile t-paper"><span className="mono">{w.params.id.replace('VLC-', '')}</span></span><span className="dock-tip">Ficha {w.params.id}</span></button>)}
+      {insp.slice(-4).map(w => <button key={w.id} type="button" className={`tb-it open${f?.id === w.id ? ' front' : ''}`} onClick={() => dockClick(w.id)} aria-label={`Ficha ${w.params.id}`}>
+        <span className="tile t-paper"><span className="mono">{w.params.id.replace('VLC-', '')}</span></span><span className="tb-tip">Ficha {w.params.id}</span></button>)}
+    </div>
+    <div className="tb-right">
+      <label className="tb-role"><Icon n="user" size={15} /><span className="sr">Ver como</span>
+        <select value={role()} onChange={e => changeRole(e.target.value as RoleKey)} aria-label="Ver como">{(Object.keys(ROLES) as RoleKey[]).map(k => <option key={k} value={k}>{ROLES[k].label}</option>)}</select>
+      </label>
+      {can('exec') && <button type="button" className="tb-it" onClick={onBell} aria-label={`Alertas: ${alerts.length}`}><Icon n="bell" size={18} />{hot > 0 && <span className="tb-badge">{hot}</span>}<span className="tb-tip">Alertas</span></button>}
+      <Clock />
     </div>
   </nav>;
 }
@@ -172,10 +183,11 @@ export function Desktop() {
   const { DV } = useDomain();
   const [spot, setSpot] = useState(false);
   const [bell, setBell] = useState(false);
+  const [start, setStart] = useState(false);
   const [mobile, setMobile] = useState(isMobile());
   useEffect(() => { const r = () => setMobile(isMobile()); window.addEventListener('resize', r); return () => window.removeEventListener('resize', r); }, []);
   useEffect(() => {
-    const k = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSpot(s => !s); } else if (e.key === 'Escape') { setSpot(false); setBell(false); } };
+    const k = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSpot(s => !s); } else if (e.key === 'Escape') { setSpot(false); setBell(false); setStart(false); } };
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
   }, []);
   // Primera apertura: la app principal del rol.
@@ -186,16 +198,18 @@ export function Desktop() {
       if (a === 'lote' && b) openInsp('lot', b); else if (APPS.some(x => x.id === a)) openApp(a, b); };
     h(); window.addEventListener('hashchange', h); return () => window.removeEventListener('hashchange', h);
   }, []);
+  useEffect(() => { if (!start) return; const c = () => setStart(false); window.addEventListener('pointerdown', c); return () => window.removeEventListener('pointerdown', c); }, [start]);
   const vis = wins.filter(w => !w.min);
   const top = vis.sort((a, b) => b.z - a.z)[0];
   return <div className="os">
     <Wallpaper />
-    <MenuBar onSearch={() => setSpot(true)} onBell={() => setBell(b => !b)} alerts={DV.alerts} />
-    <main className="workspace">
+    <main className="workspace" onPointerDown={() => setStart(false)}>
+      <div className="watermark"><b>LotIA · demo</b>Viva Lago Country · datos ficticios · corte {D.fmt(st().T)}</div>
       <Widgets />
       {wins.map(w => <Window key={w.id} w={w} active={w.id === top?.id} mobile={mobile} />)}
     </main>
-    <Dock />
+    <Taskbar start={start} onStart={() => { setStart(v => !v); setBell(false); }} onSearch={() => { setStart(false); setSpot(true); }} onBell={() => { setStart(false); setBell(b => !b); }} alerts={DV.alerts} />
+    {start && <StartMenu onClose={() => setStart(false)} onSearch={() => setSpot(true)} />}
     {bell && <NotifCenter alerts={DV.alerts} onClose={() => setBell(false)} />}
     {spot && <Spotlight onClose={() => setSpot(false)} />}
     <OverlayHost />

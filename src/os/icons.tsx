@@ -40,6 +40,7 @@ const P: Record<string, string> = {
   moon: 'M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z',
   sun: 'M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 2.5V4M12 20v1.5M2.5 12H4M20 12h1.5M5.3 5.3l1 1M17.7 17.7l1 1M5.3 18.7l1-1M17.7 6.3l1-1',
   reset: 'M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v4.5H9',
+  power: 'M12 3.5v8M6.6 6.6a7.5 7.5 0 1 0 10.8 0',
   layers: 'M12 4 3 9l9 5 9-5zM3 14l9 5 9-5',
   phone: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z',
   clock: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17zM12 7.5V12l3 2',
@@ -52,4 +53,9 @@ export function Icon({ n, size = 18, className }: { n: string; size?: number; cl
 /** Monograma de Viva Lago: colina, horizonte y ondas del lago. */
 export function Mono({ size = 36 }: { size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="none" stroke="currentColor" strokeOpacity=".45" /><path d="M11 19l7-9 7 9" fill="none" stroke="currentColor" strokeWidth="1.2" /><path d="M5 19.5h26" stroke="var(--sand)" strokeWidth="1.2" /><path d="M8 23.5c3.3-2 6.7 2 10 0s6.7 2 10 0M10.5 27.5c2.5-1.5 5 1.5 7.5 0s5 1.5 7.5 0" fill="none" stroke="currentColor" strokeWidth="1.1" /></svg>;
+}
+
+/** Marca de LotIA: cuatro parcelas, una tomada por el acento. */
+export function LotiaMark({ size = 22 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2" fill="#13856C" /><rect x="13" y="2" width="9" height="9" rx="2" fill="#0F6B57" opacity=".55" /><rect x="2" y="13" width="9" height="9" rx="2" fill="#0F6B57" opacity=".55" /><rect x="13" y="13" width="9" height="9" rx="2" fill="#0F6B57" opacity=".8" /></svg>;
 }

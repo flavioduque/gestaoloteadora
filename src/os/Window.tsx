@@ -18,6 +18,7 @@ export function Window({ w, active, mobile }: { w: Win; active: boolean; mobile:
   const def = appDef(w.app);
   const ref = useRef<HTMLDivElement>(null);
   const [preview, setPreview] = useState<null | 'left' | 'right' | 'max'>(null);
+  const [fly, setFly] = useState(false);
   const C = def.C;
   const fill = w.max || mobile;
 
@@ -37,7 +38,7 @@ export function Window({ w, active, mobile }: { w: Win; active: boolean; mobile:
       if (!moved) { moved = true; if (fill || w.snap) setGeom(w.id, { max: false, snap: null, x: startX, y: startY }); el.classList.add('dragging'); }
       x = startX + dx; y = Math.max(0, startY + dy);
       el.style.left = x + 'px'; el.style.top = y + 'px';
-      pv = ev.clientY <= MENU_H + 2 ? 'max' : ev.clientX <= 3 ? 'left' : ev.clientX >= window.innerWidth - 3 ? 'right' : null;
+      pv = ev.clientY <= 2 ? 'max' : ev.clientX <= 3 ? 'left' : ev.clientX >= window.innerWidth - 3 ? 'right' : null;
       setPreview(pv);
     };
     const up = () => {
@@ -79,12 +80,17 @@ export function Window({ w, active, mobile }: { w: Win; active: boolean; mobile:
     <section ref={ref} className={`win${active ? ' active' : ''}${fill ? ' max' : ''}${w.snap ? ' snapped' : ''}${w.min ? ' min' : ''}`} style={style}
       onPointerDownCapture={() => { if (!active) focus(w.id); }} role="dialog" aria-label={title} aria-hidden={w.min || undefined}>
       <header className="win-h" onPointerDown={onDrag} onDoubleClick={e => { if (!(e.target as HTMLElement).closest('button') && !mobile) toggleMax(w.id); }}>
-        <div className="win-ctl">
-          <button type="button" className="tl close" onClick={() => close(w.id)} aria-label={`Cerrar ${title}`}><Icon n="x" size={10} /></button>
-          {!mobile && <button type="button" className="tl min" onClick={() => minimize(w.id)} aria-label="Minimizar"><Icon n="min" size={10} /></button>}
-          {!mobile && <button type="button" className="tl max" onClick={() => toggleMax(w.id)} aria-label={w.max ? 'Restaurar' : 'Maximizar'}><Icon n={w.max ? 'restore' : 'max'} size={10} /></button>}
+        <div className="win-t"><span className={`app-dot t-${def.tint}`}><Icon n={def.icon} size={11} /></span>{title}</div>
+        <div className="win-ctl" onPointerLeave={() => setFly(false)}>
+          {!mobile && <button type="button" className="wc" onClick={() => minimize(w.id)} aria-label="Minimizar" title="Minimizar"><Icon n="min" size={12} /></button>}
+          {!mobile && <button type="button" className="wc" onClick={() => toggleMax(w.id)} onPointerEnter={() => setFly(true)} aria-label={w.max ? 'Restaurar' : 'Maximizar'} title={w.max ? 'Restaurar' : 'Maximizar'}><Icon n={w.max ? 'restore' : 'max'} size={12} /></button>}
+          <button type="button" className="wc close" onClick={() => close(w.id)} aria-label={`Cerrar ${title}`} title="Cerrar"><Icon n="x" size={13} /></button>
+          {fly && !mobile && <div className="snapfly" role="group" aria-label="Diseños de encaje">
+            <div className="lay"><button type="button" aria-label="Mitad izquierda" onClick={() => { setFly(false); snap(w.id, 'left'); }} /><button type="button" aria-label="Mitad derecha" onClick={() => { setFly(false); snap(w.id, 'right'); }} /></div>
+            <div className="lay"><button type="button" aria-label="Pantalla completa" onClick={() => { setFly(false); snap(w.id, 'max'); }} /></div>
+            <div className="lay"><button type="button" aria-label="Restaurar tamaño" style={{ flex: '0 0 60%', margin: '6px auto' }} onClick={() => { setFly(false); setGeom(w.id, { max: false, snap: null }, true); }} /></div>
+          </div>}
         </div>
-        <div className="win-t"><span className={`app-dot t-${def.tint}`}><Icon n={def.icon} size={12} /></span>{title}</div>
       </header>
       <div className={'win-body' + (def.flush ? ' flush' : '')}>
         <Suspense fallback={<div className="win-loading">Abriendo {title}…</div>}><C win={w} /></Suspense>

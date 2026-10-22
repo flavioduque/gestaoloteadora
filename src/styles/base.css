@@ -1,54 +1,54 @@
 :root{
-  --bg:#ECEEEA; --panel:#FBFAF6; --panel-2:#F3F1EA; --ink:#16212A; --ink-2:#47555F; --ink-3:#58646E;
-  --line:#D8DAD2; --line-2:#C5C9BF;
-  --lake:#133B52; --lake-2:#1E5675; --lake-soft:#DCE7EC; --on-lake:#FBFAF6;
-  --green:#2F4B3C; --green-soft:#DDE6DE; --sand:#C9B992; --brass:#7A5C2C; --brass-soft:#EFE6D3;
-  --rail-bg:#0F2F42; --rail-ink:#EDEBE3; --rail-ink-2:#9FB3BF; --rail-line:#21465C; --rail-active:#1B4760;
-  --s-disp:#357253; --s-disp-bg:#DCEBE1; --s-res:#7A5410; --s-res-bg:#F4E6C8; --s-vend:#2C4A63; --s-vend-bg:#DBE3EA;
-  --s-bloq:#62676C; --s-bloq-bg:#E4E5E3; --s-reg:#6B4F84; --s-reg-bg:#E9E1EE;
-  --crit:#A63D2A; --crit-bg:#F4DED8; --warn:#7A5410; --warn-bg:#F4E6C8; --ok:#357253; --ok-bg:#DCEBE1;
-  --m-water:#C7DAE2; --m-water-line:#A6C1CD; --m-land:#E2E4D9; --m-road:#F8F7F2; --m-park:#C2D4BE; --m-tree:#97B394;
-  --m-build:#D5D0C0; --m-stroke:#F8F7F2; --m-label:#2A3A44;
-  --m-disp:#A6CCB3; --m-res:#E8CB8B; --m-vend:#A7B8C7; --m-bloq:#C8CAC4; --m-reg:#CBB9D8; --m-off:#D7D9D0;
-  --chart-a:#133B52; --chart-b:#C9B992; --chart-c:#8FB0C2;
-  --f-display:'Marcellus', 'Cormorant Garamond', Georgia, serif;
-  --f-body:'Hanken Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --f-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  --r:6px;
-  --shadow:0 1px 0 rgba(22,33,42,.04), 0 18px 40px -22px rgba(15,47,66,.35);
+  --bg:#F3F3F3; --panel:#FFFFFF; --panel-2:#F7F7F7; --ink:#1B1B1B; --ink-2:#424242; --ink-3:#5C5C5C;
+  --line:#E5E5E5; --line-2:#D1D1D1;
+  --lake:#0F6B57; --lake-2:#13856C; --lake-soft:#E1F1EC; --on-lake:#FFFFFF;
+  --green:#0F6B57; --green-soft:#E1F1EC; --sand:#13856C; --brass:#7A5410; --brass-soft:#F1F7F5;
+  --rail-bg:#0E2E27; --rail-ink:#F3F7F5; --rail-ink-2:#A8C4BB; --rail-line:#24463D; --rail-active:#1A3D35;
+  --s-disp:#16794A; --s-disp-bg:#DFF2E6; --s-res:#7A5410; --s-res-bg:#FBEBC9; --s-vend:#2F4F75; --s-vend-bg:#E1E9F4;
+  --s-bloq:#5C5C5C; --s-bloq-bg:#EBEBEB; --s-reg:#6B4F84; --s-reg-bg:#EEE6F3;
+  --crit:#C42B1C; --crit-bg:#FDE7E9; --warn:#7A5410; --warn-bg:#FBEBC9; --ok:#16794A; --ok-bg:#DFF2E6;
+  --m-water:#CFE3EA; --m-water-line:#A3C4D0; --m-land:#ECEFEA; --m-road:#FFFFFF; --m-park:#CFE3C9; --m-tree:#9DC294;
+  --m-build:#DADDD6; --m-stroke:#FFFFFF; --m-label:#1B1B1B;
+  --m-disp:#A9D9B8; --m-res:#F2D28A; --m-vend:#AFC3DC; --m-bloq:#CFCFCF; --m-reg:#D3C2E2; --m-off:#E2E4E0;
+  --chart-a:#0F6B57; --chart-b:#C4C9CE; --chart-c:#8CC7B5;
+  --f-display:"Segoe UI Variable Display","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue","Noto Sans",Arial,sans-serif;
+  --f-body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue","Noto Sans",Arial,sans-serif;
+  --f-mono:"Cascadia Mono",Consolas,ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:8px;
+  --shadow:0 2px 4px rgba(0,0,0,.06), 0 16px 32px -16px rgba(0,0,0,.28);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0D1418; --panel:#131D23; --panel-2:#18242B; --ink:#E9E7DF; --ink-2:#B3BBB9; --ink-3:#86918F;
-    --line:#24323A; --line-2:#31424B;
-    --lake:#8CBAD3; --lake-2:#A9CFE3; --lake-soft:#16303D; --on-lake:#0D1418;
-    --green:#94BEA4; --green-soft:#182B22; --sand:#CDBE98; --brass:#CFAE70; --brass-soft:#2E2617;
-    --rail-bg:#0A1216; --rail-ink:#E9E7DF; --rail-ink-2:#8FA2AD; --rail-line:#1C2B33; --rail-active:#16262F;
-    --s-disp:#78B793; --s-disp-bg:#16301F; --s-res:#DDAA4E; --s-res-bg:#382B13; --s-vend:#8DB1D0; --s-vend-bg:#172A39;
-    --s-bloq:#A2A8AC; --s-bloq-bg:#252B2E; --s-reg:#BC9FD0; --s-reg-bg:#2B2233;
-    --crit:#E58467; --crit-bg:#3A1E17; --warn:#DDAA4E; --warn-bg:#382B13; --ok:#78B793; --ok-bg:#16301F;
-    --m-water:#132E3B; --m-water-line:#1E4558; --m-land:#172120; --m-road:#26343B; --m-park:#1C3327; --m-tree:#2B4A38;
-    --m-build:#2B3330; --m-stroke:#26343B; --m-label:#DCE3E2;
-    --m-disp:#2F6447; --m-res:#7A5D22; --m-vend:#33506A; --m-bloq:#3A3F41; --m-reg:#55406A; --m-off:#232D30;
-    --chart-a:#8CBAD3; --chart-b:#8C7E5C; --chart-c:#3E6578;
-    --shadow:0 1px 0 rgba(0,0,0,.2), 0 18px 40px -20px rgba(0,0,0,.7);
+    --bg:#202020; --panel:#2B2B2B; --panel-2:#323232; --ink:#F2F2F2; --ink-2:#C8C8C8; --ink-3:#A6A6A6;
+    --line:#3A3A3A; --line-2:#4A4A4A;
+    --lake:#4FC3A1; --lake-2:#6FD3B4; --lake-soft:#1D3A33; --on-lake:#0B1F1A;
+    --green:#4FC3A1; --green-soft:#1D3A33; --sand:#4FC3A1; --brass:#E2B866; --brass-soft:#26302D;
+    --rail-bg:#10241F; --rail-ink:#F2F2F2; --rail-ink-2:#9DB8AF; --rail-line:#2A443D; --rail-active:#1A332D;
+    --s-disp:#6CCB91; --s-disp-bg:#173324; --s-res:#E2B866; --s-res-bg:#3A2E14; --s-vend:#9DB9E0; --s-vend-bg:#1E2B3D;
+    --s-bloq:#B5B5B5; --s-bloq-bg:#353535; --s-reg:#C6AEDC; --s-reg-bg:#2F2638;
+    --crit:#FF8C7E; --crit-bg:#3D1F1C; --warn:#E2B866; --warn-bg:#3A2E14; --ok:#6CCB91; --ok-bg:#173324;
+    --m-water:#18323A; --m-water-line:#2A4E5A; --m-land:#232723; --m-road:#30352F; --m-park:#1F3626; --m-tree:#2D4C34;
+    --m-build:#33382F; --m-stroke:#30352F; --m-label:#E6EAE6;
+    --m-disp:#2E6B48; --m-res:#7A5D22; --m-vend:#36527A; --m-bloq:#454545; --m-reg:#58436E; --m-off:#2A2E29;
+    --chart-a:#4FC3A1; --chart-b:#5B6066; --chart-c:#2E7E68;
+    --shadow:0 2px 4px rgba(0,0,0,.3), 0 16px 32px -16px rgba(0,0,0,.7);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0D1418; --panel:#131D23; --panel-2:#18242B; --ink:#E9E7DF; --ink-2:#B3BBB9; --ink-3:#86918F;
-  --line:#24323A; --line-2:#31424B;
-  --lake:#8CBAD3; --lake-2:#A9CFE3; --lake-soft:#16303D; --on-lake:#0D1418;
-  --green:#94BEA4; --green-soft:#182B22; --sand:#CDBE98; --brass:#CFAE70; --brass-soft:#2E2617;
-  --rail-bg:#0A1216; --rail-ink:#E9E7DF; --rail-ink-2:#8FA2AD; --rail-line:#1C2B33; --rail-active:#16262F;
-  --s-disp:#78B793; --s-disp-bg:#16301F; --s-res:#DDAA4E; --s-res-bg:#382B13; --s-vend:#8DB1D0; --s-vend-bg:#172A39;
-  --s-bloq:#A2A8AC; --s-bloq-bg:#252B2E; --s-reg:#BC9FD0; --s-reg-bg:#2B2233;
-  --crit:#E58467; --crit-bg:#3A1E17; --warn:#DDAA4E; --warn-bg:#382B13; --ok:#78B793; --ok-bg:#16301F;
-  --m-water:#132E3B; --m-water-line:#1E4558; --m-land:#172120; --m-road:#26343B; --m-park:#1C3327; --m-tree:#2B4A38;
-  --m-build:#2B3330; --m-stroke:#26343B; --m-label:#DCE3E2;
-  --m-disp:#2F6447; --m-res:#7A5D22; --m-vend:#33506A; --m-bloq:#3A3F41; --m-reg:#55406A; --m-off:#232D30;
-  --chart-a:#8CBAD3; --chart-b:#8C7E5C; --chart-c:#3E6578;
-  --shadow:0 1px 0 rgba(0,0,0,.2), 0 18px 40px -20px rgba(0,0,0,.7);
+  --bg:#202020; --panel:#2B2B2B; --panel-2:#323232; --ink:#F2F2F2; --ink-2:#C8C8C8; --ink-3:#A6A6A6;
+  --line:#3A3A3A; --line-2:#4A4A4A;
+  --lake:#4FC3A1; --lake-2:#6FD3B4; --lake-soft:#1D3A33; --on-lake:#0B1F1A;
+  --green:#4FC3A1; --green-soft:#1D3A33; --sand:#4FC3A1; --brass:#E2B866; --brass-soft:#26302D;
+  --rail-bg:#10241F; --rail-ink:#F2F2F2; --rail-ink-2:#9DB8AF; --rail-line:#2A443D; --rail-active:#1A332D;
+  --s-disp:#6CCB91; --s-disp-bg:#173324; --s-res:#E2B866; --s-res-bg:#3A2E14; --s-vend:#9DB9E0; --s-vend-bg:#1E2B3D;
+  --s-bloq:#B5B5B5; --s-bloq-bg:#353535; --s-reg:#C6AEDC; --s-reg-bg:#2F2638;
+  --crit:#FF8C7E; --crit-bg:#3D1F1C; --warn:#E2B866; --warn-bg:#3A2E14; --ok:#6CCB91; --ok-bg:#173324;
+  --m-water:#18323A; --m-water-line:#2A4E5A; --m-land:#232723; --m-road:#30352F; --m-park:#1F3626; --m-tree:#2D4C34;
+  --m-build:#33382F; --m-stroke:#30352F; --m-label:#E6EAE6;
+  --m-disp:#2E6B48; --m-res:#7A5D22; --m-vend:#36527A; --m-bloq:#454545; --m-reg:#58436E; --m-off:#2A2E29;
+  --chart-a:#4FC3A1; --chart-b:#5B6066; --chart-c:#2E7E68;
+  --shadow:0 2px 4px rgba(0,0,0,.3), 0 16px 32px -16px rgba(0,0,0,.7);
   color-scheme:dark;
 }
 
@@ -69,8 +69,8 @@ p{margin:0;text-wrap:pretty}
 
 
 /* ——— Type ——— */
-h1{font-family:var(--f-display);font-weight:400;font-size:32px;line-height:1.15;letter-spacing:.01em}
-h2{font-family:var(--f-display);font-weight:400;font-size:21px;letter-spacing:.01em}
+h1{font-family:var(--f-display);font-weight:600;font-size:28px;line-height:1.2;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:-.005em}
 h3{font-size:14px;font-weight:600}
 .lede{color:var(--ink-2);max-width:68ch;margin-top:8px;font-size:15px}
 .vh{display:flex;gap:20px;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;margin-bottom:22px}
