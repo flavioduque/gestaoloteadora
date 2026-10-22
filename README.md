@@ -2,7 +2,7 @@
 
 SaaS de gestión para loteadoras con interfaz de escritorio estilo Windows 11: barra de tareas con menú Inicio, ventanas que se mueven, redimensionan, minimizan y se encajan (media pantalla o completa), buscador global y centro de alertas. **Viva Lago Country** es el cliente de demostración, con datos ficticios.
 
-Basado en la demo [viva-lago-country-sistema.vercel.app](https://viva-lago-country-sistema.vercel.app/). Conserva su lógica de negocio y su identidad visual, y la lleva a un entorno multiventana.
+Basado en la demo [viva-lago-country-sistema.vercel.app](https://viva-lago-country-sistema.vercel.app/). Conserva su lógica de negocio; el visual es propio de LotIA.
 
 ## Ejecutar
 
@@ -46,7 +46,7 @@ El selector **Ver como** de la barra de tareas cambia de rol: Dirección, Admini
 
 ```
 src/domain/   reglas de negocio puras: tipos, catálogos, motor de financiación, datos demo, derivados, servidor simulado, consultas y pruebas
-src/os/       escritorio: gestor de ventanas, ventana, dock, barra de menú, buscador, diálogos y avisos
+src/os/       escritorio: gestor de ventanas, ventana, barra de tareas, menú Inicio, buscador, diálogos y avisos
 src/apps/     una app por archivo, más las fichas (insp/) y los diálogos compartidos (dialogs/)
 src/ui/       componentes compartidos: kit, plan de pagos, gráficos y embudo
 src/styles/   base.css (lenguaje visual de la demo) y os.css (escritorio)
