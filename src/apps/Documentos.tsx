@@ -70,7 +70,7 @@ export default function Documentos(_: AppProps) {
     <div className="docs">
       <aside className="docs-side">
         <input type="search" placeholder="Contrato, lote o nombre" value={q} onChange={e => setQ(e.target.value)} aria-label="Buscar expediente" />
-        {groups.map(([g, items]) => items.length > 0 && <div key={g} className="docs-grp"><h3>{g} <span className="meta">{items.length}</span></h3>
+        {groups.map(([g, items]) => items.length > 0 && <div key={g} className="docs-grp"><h2>{g} <span className="meta">{items.length}</span></h2>
           {items.map(x => { const [a, b] = label(x); return <button key={x.id} type="button" className="docs-it" aria-pressed={cur?.id === x.id} onClick={() => setSel(x)}><Icon n={x.kind === 'ctr' ? 'docs' : 'res'} size={16} /><span><b className="mono">{a}</b><small>{b}</small></span></button>; })}</div>)}
         {groups.every(g => !g[1].length) && <p className="meta">Sin expedientes que coincidan.</p>}
       </aside>

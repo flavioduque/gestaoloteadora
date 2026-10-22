@@ -30,7 +30,7 @@ export default function AcctInsp({ id }: { id: string }) {
     {a.favorC > 0 && <Note><b>Saldo a favor:</b> {usd2(a.favorC)} pendiente de aplicar.</Note>}
     <DSec title={`Calendario de cuotas · ${a.paidN} de ${pl.n} pagas`}><ScheduleTable rows={sched} /><p className="meta" style={{ marginTop: 6 }}>Mostrando las cuotas cercanas a hoy. {planMethod(pl)}</p></DSec>
     <DSec title="Libro de movimientos"><div className="tbl-wrap"><table className="tbl"><thead><tr><th>Fecha</th><th>Tipo</th><th className="num">Importe</th><th>Referencia</th><th>Aprobó</th></tr></thead><tbody>
-      {mv.slice(0, 12).map(e => <tr key={e.id}><td>{D.fmtS(e.date)}</td><td>{MV_T[e.type]}{e.note && e.type !== 'pago' && <span className="sub">{e.note}</span>}</td><td className={'num' + (e.amountC < 0 ? ' amt-neg' : '')}>{usd2(e.amountC)}</td><td className="mono" style={{ fontSize: 11 }}>{e.ref}</td><td>{e.approvedBy || '—'}</td></tr>)}
+      {mv.slice(0, 12).map(e => <tr key={e.id}><td>{D.fmtS(e.date)}</td><td>{MV_T[e.type]}{e.note && e.type !== 'pago' && <span className="sub">{e.note}</span>}</td><td className={'num' + (e.amountC < 0 ? ' amt-neg' : '')}>{usd2(e.amountC)}</td><td className="mono" style={{ fontSize: 12 }}>{e.ref}</td><td>{e.approvedBy || '—'}</td></tr>)}
     </tbody></table></div></DSec>
     <DSec title="Pagos"><div className="tbl-wrap"><table className="tbl"><thead><tr><th>Pago</th><th>Fecha</th><th className="num">Importe</th><th>Estado</th><th /></tr></thead><tbody>
       {pays.slice(0, 10).map(p => <tr key={p.id}><td className="mono">{p.id}<span className="sub">{p.source}</span></td><td>{D.fmtS(p.date)}</td><td className="num">{usd2(p.amountC)}</td><td><Pill cls={PAY_ST[p.status][1]}>{PAY_ST[p.status][0]}</Pill></td>

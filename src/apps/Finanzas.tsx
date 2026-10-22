@@ -93,7 +93,7 @@ function Libro({ q, setQ }: { q: string; setQ: (s: string) => void }) {
     <div className="tbl-wrap"><table className="tbl"><thead><tr><th>Movimiento</th><th>Fecha</th><th>Contrato</th><th>Tipo</th><th className="num">Importe</th><th>Referencia</th><th>Registró</th><th>Aprobó</th></tr></thead><tbody>
       {rows.slice(0, 150).map(e => <tr key={e.id}><td className="mono">{e.id}</td><td>{D.fmt(e.date)}</td><td><L kind="acct" id={e.contractId} /></td>
         <td>{MV_T[e.type]}{e.type !== 'pago' && e.note && <span className="sub">{e.note}</span>}</td>
-        <td className={'num' + (e.amountC < 0 ? ' amt-neg' : '')}>{usd2(e.amountC)}</td><td className="mono" style={{ fontSize: 11 }}>{e.ref}</td><td>{e.by}</td><td>{e.approvedBy || '—'}</td></tr>)}
+        <td className={'num' + (e.amountC < 0 ? ' amt-neg' : '')}>{usd2(e.amountC)}</td><td className="mono" style={{ fontSize: 12 }}>{e.ref}</td><td>{e.by}</td><td>{e.approvedBy || '—'}</td></tr>)}
     </tbody></table></div>
     {rows.length > 150 && <p className="meta" style={{ marginTop: 6 }}>Mostrando 150 de {rows.length}. Usá el filtro o la búsqueda.</p>}
   </>;
@@ -209,13 +209,13 @@ function Cobr() {
   const done = (id: string) => { const t = st().tasks.find(x => x.id === id)!; log('Tarea de cobranza completada', 'Cobranza', t.contractId, t.text); commit(() => { t.done = true; }); };
   return <>
     <div className="split" style={{ marginTop: 0 }}>
-      <Box><h3>Secuencia de cobranza</h3><span className="meta">Configurable por paso. Día relativo al vencimiento.</span>
+      <Box><h2 className="h3">Secuencia de cobranza</h2><span className="meta">Configurable por paso. Día relativo al vencimiento.</span>
         <div className="tbl-wrap"><table className="tbl"><thead><tr><th>Paso</th><th className="num">Día</th><th>Canal</th><th>Activo</th><th /></tr></thead><tbody>
           {S.collSeq.map(s => <tr key={s.k}><td>{s.label}</td><td className="num mono">{s.off > 0 ? '+' : ''}{s.off}</td><td>{['pre', 'd0'].includes(s.k) ? 'Preferido del titular' : s.channel}</td>
             <td><input type="checkbox" checked={s.on} disabled={!fe} onChange={e => toggle(s.k, e.target.checked)} aria-label={`Activar ${s.label}`} /></td>
             <td className="num"><Btn sm kind="ghost" onClick={() => tpl(s.k)}>Plantilla</Btn></td></tr>)}
         </tbody></table></div></Box>
-      <Box><h3>Canales y reglas</h3><span className="meta">Estado real de cada integración</span>
+      <Box><h2 className="h3">Canales y reglas</h2><span className="meta">Estado real de cada integración</span>
         <div className="proj-row" style={{ gridTemplateColumns: '1fr auto' }}><span>WhatsApp Business Platform</span><Pill cls="warn">Preparado · no activo</Pill></div>
         <div className="proj-row" style={{ gridTemplateColumns: '1fr auto' }}><span>Correo transaccional</span><Pill cls="warn">Preparado · no activo</Pill></div>
         <div className="proj-row" style={{ gridTemplateColumns: '1fr auto' }}><span>Tareas internas y llamadas</span><Pill cls="ok">Activo</Pill></div>
@@ -243,7 +243,7 @@ function Cobr() {
 /* ---- Simulador de plan ---- */
 function Sim() {
   const T = st().T;
-  return <Box><h3>Simulador de plan de financiación</h3><span className="meta">Mismo motor que usa el contrato. No crea registros.</span>
+  return <Box><h2 className="h3">Simulador de plan de financiación</h2><span className="meta">Mismo motor que usa el contrato. No crea registros.</span>
     <PlanFields init={{ price: 85000, down: 30, n: 60, rate: 0, first: D.addM(T, 1, 10), round: 'centavo' }} /></Box>;
 }
 

@@ -7,7 +7,7 @@ import type { RoleKey } from '../domain/types';
 import { D, DOW, MESL, pct, usd, usdK } from '../domain/util';
 import { useDomain } from './hooks';
 import { Icon, Mono } from './icons';
-import { go, openApp } from './nav';
+import { go, openApp, openInsp } from './nav';
 import { OverlayHost, openDialog, toast } from './overlay';
 import { Window } from './Window';
 import { closeAll, dockClick, focused, isMobile, minimizeAll, open, useWins } from './wm';
@@ -179,7 +179,13 @@ export function Desktop() {
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
   }, []);
   // Primera apertura: la app principal del rol.
-  useEffect(() => { if (!wins.length) { const r = role(); const a = r === 'propietario' ? 'portal' : r === 'asesor' ? 'crm' : r === 'finanzas' ? 'fin' : 'dir'; open(a, {}, appDef(a).size); } }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (!wins.length && !location.hash) { const r = role(); const a = r === 'propietario' ? 'portal' : r === 'asesor' ? 'crm' : r === 'finanzas' ? 'fin' : 'dir'; open(a, {}, appDef(a).size); } }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Enlace directo: #fin, #fin.conc o #lote.A-05 abre esa app o ficha (también con /).
+  useEffect(() => {
+    const h = () => { const [a, b] = decodeURIComponent(location.hash.slice(1)).split(/[/.]/); if (!a) return;
+      if (a === 'lote' && b) openInsp('lot', b); else if (APPS.some(x => x.id === a)) openApp(a, b); };
+    h(); window.addEventListener('hashchange', h); return () => window.removeEventListener('hashchange', h);
+  }, []);
   const vis = wins.filter(w => !w.min);
   const top = vis.sort((a, b) => b.z - a.z)[0];
   return <div className="os">

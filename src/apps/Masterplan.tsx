@@ -110,11 +110,11 @@ export default function Masterplan(_: AppProps) {
     <div className="plan-layout">
       <div className="map-wrap"><MapSVG match={match} f={f} comm={comm} sel={sel} /></div>
       <div className="side">
-        <Box><h3 style={{ marginBottom: 8 }}>{comm ? 'Disponibilidad' : 'Estado del inventario'}</h3>
+        <Box><h2 className="h3" style={{ marginBottom: 8 }}>{comm ? 'Disponibilidad' : 'Estado del inventario'}</h2>
           {lg.map(([c, l, n]) => <div key={c} className="lg-row"><i style={{ background: c === 'bloq' ? 'repeating-linear-gradient(45deg,var(--m-bloq) 0 4px,var(--m-stroke) 4px 6px)' : `var(--m-${c})` }} />{l}<span className="c">{n}</span></div>)}
           {!comm && can('fin_view') && f.mora && <div className="lg-row"><i style={{ background: 'var(--crit)', borderRadius: '50%', width: 9, height: 9, margin: '0 1.5px' }} />Cuota vencida (indicador financiero)<span className="c">{[...DV.accts.values()].filter(a => a.overdueC > 0).length}</span></div>}
         </Box>
-        <Box><h3 style={{ marginBottom: 8 }}>Comparar lotes</h3>
+        <Box><h2 className="h3" style={{ marginBottom: 8 }}>Comparar lotes</h2>
           {ui.compare.length ? <><div className="cmp-list">{ui.compare.map(id => { const l = getLot(id); return <div key={id}><span><b className="mono">{id}</b> · {catLabel(l.category)} · {usdK(l.priceC)}</span><button type="button" className="iconbtn" onClick={() => setPlanUI({ compare: ui.compare.filter(x => x !== id) })} aria-label={`Quitar ${id}`}><Icon n="x" size={14} /></button></div>; })}</div>
             <div style={{ marginTop: 10 }}><Btn sm kind="primary" onClick={openCompare}>Comparar {ui.compare.length}</Btn></div></>
             : <p className="meta">Abrí un lote y usá “Agregar a comparación”. Hasta 3 lotes.</p>}

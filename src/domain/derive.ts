@@ -222,7 +222,7 @@ export function agendaItems(from: string, to: string): AgendaItem[] {
   const crm = can('crm');
   if (crm) visibleProspects().forEach(p => {
     if (inR(p.visitDate) && p.stage === 'visita_prog') out.push({ id: 'v' + p.id, date: p.visitDate!, title: `Visita · ${p.name}`, sub: `${advName(p.advisorId)}${p.category ? ' · ' + CAT[p.category].label : ''}`, kind: 'visita', go: { kind: 'insp', insp: 'prospect', id: p.id } });
-    if (p.nextAction && inR(p.nextAction.date) && !isClosed(p.stage)) out.push({ id: 'a' + p.id, date: p.nextAction.date, title: p.nextAction.text, sub: `${p.name} · ${advName(p.advisorId)}`, kind: 'accion', go: { kind: 'insp', insp: 'prospect', id: p.id } });
+    if (p.nextAction && inR(p.nextAction.date) && !isClosed(p.stage)) out.push({ id: 'a' + p.id, date: p.nextAction.date, title: p.name, sub: `${p.nextAction.text} · ${advName(p.advisorId)}`, kind: 'accion', go: { kind: 'insp', insp: 'prospect', id: p.id } });
   });
   if (can('res')) S.reservations.filter(r => ['vigente', 'pendiente_aprobacion'].includes(r.status) && inR(r.expires) && (can('crm_all') || me().advisorId == null || r.advisorId === me().advisorId))
     .forEach(r => out.push({ id: 'r' + r.id, date: r.expires, title: `Vence reserva ${r.id} · ${r.lotId}`, sub: getProspect(r.prospectId)?.name ?? '', kind: 'reserva', go: { kind: 'app', app: 'res' } }));

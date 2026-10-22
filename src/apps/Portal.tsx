@@ -90,7 +90,7 @@ export default function Portal(_: AppProps) {
       </div>
       {a.overdueC > 0 && <Note><b>Tenés {usd2(a.overdueC)} vencidos.</b> Si ya pagaste, informá el pago y lo verificamos con el banco. Si necesitás un plan para regularizar, escribinos desde Solicitudes.</Note>}
       <div className="portal-grid">
-        <Box><h3>Próximas cuotas</h3><span className="meta">Plan: {c.plan.downPct} % de entrada y {c.plan.n} cuotas {c.plan.rate ? 'con interés' : 'sin interés'}</span>
+        <Box><h2 className="h3">Próximas cuotas</h2><span className="meta">Plan: {c.plan.downPct} % de entrada y {c.plan.n} cuotas {c.plan.rate ? 'con interés' : 'sin interés'}</span>
           <div className="tbl-wrap"><table className="tbl"><thead><tr><th className="num">Cuota</th><th>Vence</th><th className="num">Importe</th><th>Estado</th></tr></thead><tbody>
             {upcoming.map(r => <tr key={r.n}><td className="num">{r.n}</td><td>{D.fmt(r.due)}</td><td className="num">{usd2(r.left)}</td>
               <td className={r.st.includes('vencida') ? 'st-vencida' : r.st.startsWith('parcial') ? 'st-parcial' : 'st-pendiente'}>{r.st.includes('vencida') ? 'Vencida' : r.st.startsWith('parcial') ? 'Pago parcial' : 'Pendiente'}</td></tr>)}
@@ -98,25 +98,25 @@ export default function Portal(_: AppProps) {
           </tbody></table></div>
           <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Btn kind="primary" onClick={pay}>Informar un pago</Btn><Btn kind="ghost" onClick={sched}>Ver calendario completo</Btn></div>
         </Box>
-        <Box><h3>Pagos y comprobantes</h3><span className="meta">Comprobantes internos · no son facturas fiscales</span>
+        <Box><h2 className="h3">Pagos y comprobantes</h2><span className="meta">Comprobantes internos · no son facturas fiscales</span>
           <Timeline items={pays.slice(0, 7).map(p => [D.fmtS(p.date), <span style={{ display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
             <span>{usd2(p.amountC)} · {p.kind === 'entrada' ? 'Entrada' : 'Cuota'} {p.status === 'en_revision' ? <Pill cls="warn">En verificación</Pill> : p.status === 'revertido' ? <Pill cls="neutral">Revertido</Pill> : null}</span>
             {p.status === 'confirmado' && <Lnk onClick={() => receipt(p.id)}>Comprobante</Lnk>}</span>])} />
         </Box>
       </div>
       <div className="portal-grid">
-        <Box><h3>Solicitudes a la administración</h3><span className="meta">{reqs.filter(r => r.status === 'abierta').length} abiertas</span>
+        <Box><h2 className="h3">Solicitudes a la administración</h2><span className="meta">{reqs.filter(r => r.status === 'abierta').length} abiertas</span>
           {reqs.length ? <Timeline items={reqs.map(r => [r.id, <><b>{r.type}</b> · {r.text} <Pill cls={r.status === 'abierta' ? 'warn' : 'ok'}>{r.status === 'abierta' ? 'Abierta' : 'Respondida'}</Pill>{r.updates.length > 1 && <><br /><span className="muted">{r.updates[r.updates.length - 1].text}</span></>}</>])} /> : <p className="meta">No tenés solicitudes.</p>}
           <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Btn onClick={newReq}>Nueva solicitud</Btn>{!isOwner && open && <Btn kind="ghost" onClick={() => openReqAnswer(open.id)}>Responder (administración)</Btn>}</div>
         </Box>
-        <Box><h3>Comunicaciones del desarrollo</h3><span className="meta">Publicadas por la administración</span>
+        <Box><h2 className="h3">Comunicaciones del desarrollo</h2><span className="meta">Publicadas por la administración</span>
           <Timeline items={S.comms.map(m => [D.fmtS(m.date), <><b>{m.title}</b><br /><span className="muted">{m.text}</span></>])} /></Box>
       </div>
       <div className="portal-grid">
-        <Box><h3>Mis datos de contacto</h3><div style={{ marginTop: 8 }}><DL items={[['Correo', <span className="mono">{b.email}</span>], ['Teléfono', <span className="mono">{b.phone}</span>], ['Canal preferido', b.pref], ['Mensajes de cobranza', b.optOut ? 'Desactivados' : 'Activados']]} /></div>
+        <Box><h2 className="h3">Mis datos de contacto</h2><div style={{ marginTop: 8 }}><DL items={[['Correo', <span className="mono">{b.email}</span>], ['Teléfono', <span className="mono">{b.phone}</span>], ['Canal preferido', b.pref], ['Mensajes de cobranza', b.optOut ? 'Desactivados' : 'Activados']]} /></div>
           {b.pendingChange && <p className="note" style={{ marginTop: 8 }}>Cambio solicitado el {D.fmt(b.pendingChange.date)}: pendiente de verificación por la administración.</p>}
           <div style={{ marginTop: 10 }}><Btn kind="ghost" onClick={contact}>Actualizar datos</Btn></div></Box>
-        <Box><h3>Servicios del country</h3><p className="meta" style={{ marginTop: 6 }}>Reservas de instalaciones, actividades náuticas, visitas y eventos se habilitarán acá cuando la administración los confirme. La estructura ya está prevista.</p></Box>
+        <Box><h2 className="h3">Servicios del country</h2><p className="meta" style={{ marginTop: 6 }}>Reservas de instalaciones, actividades náuticas, visitas y eventos se habilitarán acá cuando la administración los confirme. La estructura ya está prevista.</p></Box>
       </div>
     </div>
   </>;

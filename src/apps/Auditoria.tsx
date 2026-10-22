@@ -23,7 +23,7 @@ export default function Auditoria(_: AppProps) {
     </div>
     <div className="tbl-wrap"><table className="tbl"><thead><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Registro</th><th>Detalle</th><th>Motivo</th></tr></thead>
       <tbody>{rows.slice(0, 200).map((e, i) => <tr key={i}>
-        <td className="mono nowrap" style={{ fontSize: 11.5 }}>{e.ts.replace('T', ' ').slice(0, 16)}</td>
+        <td className="mono nowrap" style={{ fontSize: 12 }}>{e.ts.replace('T', ' ').slice(0, 16)}</td>
         <td>{e.user}<span className="sub">{e.role}</span></td><td>{e.action}</td>
         <td>{e.entity}<span className="sub mono">{e.entityId}</span></td><td>{e.detail}</td><td>{e.reason || <span className="muted">—</span>}</td>
       </tr>)}{!rows.length && <tr><td colSpan={6} className="empty">Sin eventos.</td></tr>}</tbody></table></div>
