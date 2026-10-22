@@ -104,7 +104,7 @@ h3{font-size:14px;font-weight:600}
 .field{display:grid;gap:5px;min-width:0}
 .field > span{font-size:11.5px;color:var(--ink-2);font-weight:600;letter-spacing:.02em}
 .field small{color:var(--ink-3);font-size:11.5px}
-input[type=text],input[type=number],input[type=date],input[type=email],input[type=tel],input[type=search],select,textarea{width:100%;background:var(--panel);border:1px solid var(--line-2);border-radius:5px;padding:8px 10px;font-size:13.5px;min-width:0}
+input[type=text],input[type=number],input[type=date],input[type=email],input[type=tel],input[type=search],input[type=time],select,textarea{width:100%;background:var(--panel);border:1px solid var(--line-2);border-radius:5px;padding:8px 10px;font-size:13.5px;min-width:0}
 textarea{resize:vertical;min-height:72px}
 input:focus,select:focus,textarea:focus{outline:2px solid color-mix(in srgb, var(--lake) 35%, transparent);border-color:var(--lake)}
 .f-err{color:var(--crit);font-size:12px;min-height:0}
@@ -370,12 +370,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid color-mix(in srgb, var
   .grid2,.grid3{grid-template-columns:minmax(0,1fr)}
   .alert{grid-template-columns:minmax(0,1fr)}
   .fn-row{grid-template-columns:110px minmax(0,1fr) 80px}
-  .dl{grid-template-columns:minmax(0,1fr)}
-  .dl > div:nth-child(odd){border-right:0}
-  .dl > div:nth-last-child(2){border-bottom:1px solid var(--line)}
   .cmp{grid-template-columns:minmax(0,1fr)}
   .cmp > div{border-right:0;border-bottom:1px solid var(--line)}
 }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
+}
+@container win (max-width: 460px){
+  .dl{grid-template-columns:minmax(0,1fr)}
+  .dl > div:nth-child(odd){border-right:0}
+  .dl > div:nth-last-child(2){border-bottom:1px solid var(--line)}
 }

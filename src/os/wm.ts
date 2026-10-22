@@ -17,11 +17,15 @@ type Geo = Pick<Win, 'x' | 'y' | 'w' | 'h' | 'max'>;
 let geo: Record<string, Geo> = {};
 try { geo = JSON.parse(localStorage.getItem(LS) || '{}'); } catch { /* sin almacenamiento */ }
 
+const LS_SESSION = 'vlc-os-session';
 let wins: Win[] = [];
-let zTop = 10;
+try { wins = JSON.parse(localStorage.getItem(LS_SESSION) || '[]'); } catch { /* sesión nueva */ }
+let zTop = wins.reduce((m, w) => Math.max(m, w.z), 10);
 let ver = 0;
 const subs = new Set<() => void>();
-const emit = () => { ver++; wins = [...wins]; subs.forEach(f => f()); };
+let sessTimer: ReturnType<typeof setTimeout> | undefined;
+// Las ventanas abiertas se recuerdan para retomar la sesión al recargar.
+const emit = () => { ver++; wins = [...wins]; subs.forEach(f => f()); clearTimeout(sessTimer); sessTimer = setTimeout(() => { try { localStorage.setItem(LS_SESSION, JSON.stringify(wins)); } catch { /* idem */ } }, 300); };
 const persist = (w: Win) => { geo[w.app === 'insp' ? 'insp' : w.app] = { x: w.x, y: w.y, w: w.w, h: w.h, max: w.max }; try { localStorage.setItem(LS, JSON.stringify(geo)); } catch { /* idem */ } };
 
 export const isMobile = () => typeof window !== 'undefined' && window.innerWidth < 760;
@@ -40,9 +44,12 @@ export function open(app: string, params: Record<string, string> = {}, size: [nu
   const w = Math.min(g?.w ?? size[0], W - 24), h = Math.min(g?.h ?? size[1], H - 16);
   const n = wins.filter(x => !x.min).length;
   // Las ventanas nuevas se escalonan para que la anterior siga visible.
-  const x = app === 'insp' ? Math.max(12, W - w - 24 - (n % 4) * 28) : (g ? g.x : Math.max(12, (W - w) / 2 + (n % 5) * 26 - 52));
-  const y = app === 'insp' ? 18 + (n % 4) * 28 : (g ? g.y : Math.max(8, (H - h) / 2 + (n % 5) * 22 - 40));
-  wins.push({ id, app, params, nonce: 0, x: clampX(x, w), y: clampY(y), w, h, z: ++zTop, min: false, max: g?.max ?? false });
+  // En pantallas anchas la columna de widgets (≈330 px a la derecha) queda libre para la primera ventana.
+  const wFit = !g && app !== 'insp' && W >= 1180 ? Math.min(w, W - 360) : w;
+  const x = app === 'insp' ? Math.max(12, W - w - 24 - (n % 4) * 28) : (g ? g.x : W >= 1180 ? 20 + (n % 5) * 26 : Math.max(12, (W - w) / 2 + (n % 5) * 26 - 52));
+  const y0 = app === 'insp' ? 18 + (n % 4) * 28 : (g ? g.y : Math.max(8, (H - h) / 2 + (n % 5) * 22 - 40));
+  const y = Math.max(0, Math.min(y0, H - h - 8));
+  wins.push({ id, app, params, nonce: 0, x: clampX(x, wFit), y: clampY(y), w: wFit, h, z: ++zTop, min: false, max: g?.max ?? false });
   emit();
 }
 const clampX = (x: number, w: number) => Math.max(-w + 120, Math.min(x, window.innerWidth - 120));
